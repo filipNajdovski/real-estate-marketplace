@@ -47,9 +47,18 @@ function Category() {
     <div className='category'>
         <header>
             <p className="pageHeader">
-                {params.categoryName == 'rent' ? 'Places for rent' : 'Places for sale' }
+                {params.categoryName === 'rent' ? 'Places for rent' : 'Places for sale' }
             </p>
         </header>
+
+        {loading ? (
+        <Spinner />
+        ) : listings && listings.length > 0 ? (
+            <></>
+        ) : (
+            <p>No listings for {params.categoryName}</p>
+        )
+        }
     </div>
   )
 }
