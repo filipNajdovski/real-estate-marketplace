@@ -24,7 +24,7 @@ function Category() {
                 // Execute query
                 const querySnap = await getDocs(q)
 
-                let listings = []
+                const listings = []
 
                 querySnap.forEach((doc) => {
                     return listings.push({
@@ -54,7 +54,15 @@ function Category() {
         {loading ? (
         <Spinner />
         ) : listings && listings.length > 0 ? (
-            <></>
+            <>
+            <main>
+                <ul className="categoryListings">
+                    {listings.map((listing) => (
+                        <h3>{listing.data.name}</h3>
+                    ))}
+                </ul>
+            </main>
+            </>
         ) : (
             <p>No listings for {params.categoryName}</p>
         )
