@@ -824,3 +824,9 @@ button {
 .homeSlider {
   height: 33vh;
 }
+
+@media (min-width: 1024px) {
+  .homeSlider {
+    height: 60vh;
+  }
+}
