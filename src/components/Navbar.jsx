@@ -35,7 +35,8 @@ function Navbar() {
             </footer>
         )
     } else {
-        <footer>
+        return(
+            <footer>
             <div className="footerContainer">
                 <div className="footerLinks">
                     
@@ -45,6 +46,8 @@ function Navbar() {
                 </p>
             </div>
         </footer>
+        )
+        
 
     }
 }
