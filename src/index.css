@@ -892,7 +892,8 @@ button {
 
 @media (min-width: 1024px) {
   .homeSlider {
-    height: 85vh;
+    height: 60vh;
+    width: 85vw;
   }
 
   .footerContainer{
