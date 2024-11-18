@@ -54,7 +54,7 @@ function HomeSlider() {
         <>
             <p className="exploreHeading">Recommended</p>
 
-            <Swiper style={{height: '33vh'}} modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{clickable: true}}>
+            <Swiper className='homeSlider' modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{clickable: true}}>
                 {listings.map(({data, id}) => (
                     <SwiperSlide key={id} onClick={() => navigate(`/category/${data.type}/${id}`)}>
                         <div style={{backgroundImage: `url(${data.imageUrls[0]})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}} className="swiperSlideDiv">

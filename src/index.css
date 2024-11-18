@@ -92,6 +92,7 @@ button {
 .category,
 .explore {
   margin: 1rem;
+  padding-bottom: 1rem;
 }
 @media (min-width: 1024px) {
   .pageContainer,
@@ -818,4 +819,8 @@ button {
   margin-left: 1rem;
   font-size: 0.8rem;
   opacity: 0.75;
+}
+
+.homeSlider {
+  height: 33vh;
 }
