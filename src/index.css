@@ -894,5 +894,22 @@ button {
   .homeSlider {
     height: 85vh;
   }
+
+  .footerContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .footerLogo{
+    cursor: pointer;
+    margin: 1rem 0;
+  }
+
+  .footerLogo img {
+    width: 250px;
+  }
 }
 
