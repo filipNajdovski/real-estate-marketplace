@@ -139,6 +139,13 @@ button {
   font-size: 2rem;
   font-weight: 800;
 }
+@media (min-width: 1024px) {
+  .pageHeader {
+    font-size: 2rem;
+    font-weight: 800;
+    padding-top: 85px;
+  }
+}
 
 .navbar {
   position: fixed;
@@ -183,6 +190,64 @@ button {
 }
 .navbarListItemNameActive {
   color: #2c2c2c;
+}
+
+@media (min-width: 1024px) {
+  .navbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 85px;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo{
+    width: 250px;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .logo img {
+    width: 250px;
+  }
+
+  .navbarNav {
+    width: 100%;
+    margin-top: 0.75rem;
+    overflow-y: hidden;
+    margin: 0 3rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .navbarListItems {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 50px;
+  }
+  
+  .navbarListItem {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  .navbarListItemName,
+  .navbarListItemNameActive {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+  }
 }
 
 .nameInput {

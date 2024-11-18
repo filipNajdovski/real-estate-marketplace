@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from "./components/PrivateRoute";
@@ -14,9 +15,19 @@ import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import Listing from "./pages/Listing";
 import Contact from "./pages/Contact";
+import Footer from "./components/Footer";
 
 
 function App() {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
     <Router>
@@ -36,10 +47,12 @@ function App() {
         <Route path="/contact/:landlordId" element={<Contact />} />
       </Routes>
       <Navbar />
+      {screenWidth >= 1024 && <Footer />}
     </Router>
     <ToastContainer />
     </>
   );
 }
+
 
 export default App;
