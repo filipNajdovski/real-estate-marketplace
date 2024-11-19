@@ -929,6 +929,7 @@ button {
   .copyright a {
     font-size: 24px;
     line-height: 28px;
+    font-weight: 500;
     color: #c5a98c;
     display: flex;
     align-items: center;
