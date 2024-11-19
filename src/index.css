@@ -912,5 +912,27 @@ button {
   .footerLogo img {
     width: 250px;
   }
+
+  .copyright {
+    font-size: 18px;
+    line-height: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .copyright img {
+    height: 28px;
+    width: 23px;
+  }
+
+  .copyright a {
+    font-size: 24px;
+    line-height: 28px;
+    color: #c5a98c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
