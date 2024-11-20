@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { getAuth , updateProfile } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 import {db} from '../firebase.config'
 import { updateDoc, doc, collection, getDocs, query, where, orderBy, deleteDoc } from 'firebase/firestore'
 import {toast} from 'react-toastify'
@@ -24,6 +25,7 @@ function Profile() {
   const {name, email} = formData
 
   const navigate = useNavigate()
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchUserListings = async () => {
@@ -94,18 +96,18 @@ function Profile() {
 
   return <div className='profile'>
     <header className="profileHeader">
-      <p className="pageHeader">My Profile</p>
+      <p className="pageHeader">{t("myProfile")}</p>
       <button type='button' onClick={onLogout} className="logOut">Logout</button>
     </header>
 
     <main>
       <div className="profileDetailsHeader">
-        <p className="profileDetailsText">Personal Details</p>
+        <p className="profileDetailsText">{t("personalDetails")}</p>
         <p className="changePersonalDetails" onClick={() => {
           changeDetails && onSubmit()
           setChangeDetails((prevState) => !prevState)
         }}>
-          {changeDetails ? 'done' : 'change'}
+          {changeDetails ? 'done' : t('change')}
         </p>
       </div>
       <div className="profileCard">
@@ -117,7 +119,7 @@ function Profile() {
 
       <Link to='/create-listing' className='createListing'>
         <img src={homeIcon} alt="home" />
-        <p>Sell or rent your home</p>
+        <p>{t("sellOrRent")}</p>
         <img src={arrowRight} alt="arrow right" />
       </Link>
 

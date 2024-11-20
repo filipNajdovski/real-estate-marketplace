@@ -1,11 +1,34 @@
 import {useNavigate, useLocation} from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import {ReactComponent as OfferIcon} from '../assets/svg/localOfferIcon.svg'
 import {ReactComponent as ExploreIcon} from '../assets/svg/exploreIcon.svg'
 import {ReactComponent as PersonOutlineIcon} from '../assets/svg/personOutlineIcon.svg'
 import  logo from '../assets/png/nedviznini-logo-horizontal.png'
 
+const languages = [
+    { value: "en", text: "English" },
+    { value: "mk", text: "Македонски" },
+];
+
 function Navbar() {
+    // It is a hook imported from 'react-i18next'
+    const { t } = useTranslation();
+    const [lang, setLang] = useState("en");
+
+    // This function put query that helps to
+    // change the language
+    const handleChange = (e) => {
+        setLang(e.target.value);
+        i18next.changeLanguage(e.target.value); // Change the language dynamically
+    };
+
+    // useEffect(() => {
+    //     console.log("Current language:", i18next.language);
+    //     console.log("Translations:", i18next.store.data);
+    //   }, []);
+
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -14,6 +37,7 @@ function Navbar() {
             return true
         }
     }
+
 
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
@@ -32,15 +56,15 @@ function Navbar() {
                     <ul className="navbarListItems">
                         <li className="navbarListItem" onClick={() => navigate('/')}>
                             <ExploreIcon fill={pathMatchRoute('/') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
-                            <p className={pathMatchRoute('/') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Explore</p>
+                            <p className={pathMatchRoute('/') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("exploreTitle")}</p>
                         </li>
                         <li className="navbarListItem" onClick={() => navigate('/offers')}>
                             <OfferIcon fill={pathMatchRoute('/offers') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
-                            <p className={pathMatchRoute('/offers') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Offers</p>
+                            <p className={pathMatchRoute('/offers') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("offersTitle")}</p>
                         </li>
                         <li className="navbarListItem" onClick={() => navigate('/profile')}>
                             <PersonOutlineIcon fill={pathMatchRoute('/profile') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
-                            <p className={pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Profile</p>
+                            <p className={pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("profile")}</p>
                         </li>
                     </ul>
                 </nav>
@@ -56,15 +80,29 @@ function Navbar() {
                     <ul className="navbarListItems">
                         <li className="navbarListItem" onClick={() => navigate('/')}>
                             <ExploreIcon fill={pathMatchRoute('/') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
-                            <p className={pathMatchRoute('/') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Explore</p>
+                            <p className={pathMatchRoute('/') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("exploreTitle")}</p>
                         </li>
                         <li className="navbarListItem" onClick={() => navigate('/offers')}>
                             <OfferIcon fill={pathMatchRoute('/offers') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
-                            <p className={pathMatchRoute('/offers') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Offers</p>
+                            <p className={pathMatchRoute('/offers') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("offersTitle")}</p>
                         </li>
                         <li className="navbarListItem" onClick={() => navigate('/profile')}>
                             <PersonOutlineIcon fill={pathMatchRoute('/profile') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
-                            <p className={pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}>Profile</p>
+                            <p className={pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("profile")}</p>
+                        </li>
+                        <li>
+                        <select value={lang} onChange={handleChange}>
+                            {languages.map((item) => {
+                                return (
+                                    <option
+                                        key={item.value}
+                                        value={item.value}
+                                    >
+                                        {item.text}
+                                    </option>
+                                );
+                            })}
+                        </select>
                         </li>
                     </ul>
                 </nav>
