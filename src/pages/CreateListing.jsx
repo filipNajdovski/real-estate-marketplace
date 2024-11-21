@@ -8,6 +8,7 @@ import {
     getDownloadURL 
 } from 'firebase/storage'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { useTranslation } from "react-i18next";
 import { db } from '../firebase.config'
 import { useNavigate } from 'react-router-dom'
 import Spinner from '../components/Spinner'
@@ -37,6 +38,7 @@ function CreateListing() {
 
     const { type, name, bedrooms, bathrooms, parking, furnished, address, offer, regularPrice, discountedPrice, images, latitude, longitude } = formData
 
+    const { t } = useTranslation()
     const auth = getAuth()
     const navigate = useNavigate()
     const isMounted = useRef(true)
@@ -206,12 +208,12 @@ function CreateListing() {
     return (
         <div className='profile'>
           <header>
-            <p className='pageHeader'>Create a Listing</p>
+            <p className='pageHeader'>{t('createTitle')}</p>
           </header>
     
           <main>
             <form onSubmit={onSubmit}>
-              <label className='formLabel'>Sell / Rent</label>
+              <label className='formLabel'>{t('sellOrRentCreate')}</label>
               <div className='formButtons'>
                 <button
                   type='button'
@@ -220,7 +222,7 @@ function CreateListing() {
                   value='sale'
                   onClick={onMutate}
                 >
-                  Sell
+                  {t('sell')}
                 </button>
                 <button
                   type='button'
@@ -229,11 +231,11 @@ function CreateListing() {
                   value='rent'
                   onClick={onMutate}
                 >
-                  Rent
+                  {t('rent')}
                 </button>
               </div>
     
-              <label className='formLabel'>Name</label>
+              <label className='formLabel'>{t('name')}</label>
               <input
                 className='formInputName'
                 type='text'
@@ -247,7 +249,7 @@ function CreateListing() {
     
               <div className='formRooms flex'>
                 <div>
-                  <label className='formLabel'>Bedrooms</label>
+                  <label className='formLabel'>{t('bedrooms')}</label>
                   <input
                     className='formInputSmall'
                     type='number'
@@ -260,7 +262,7 @@ function CreateListing() {
                   />
                 </div>
                 <div>
-                  <label className='formLabel'>Bathrooms</label>
+                  <label className='formLabel'>{t('bathrooms')}</label>
                   <input
                     className='formInputSmall'
                     type='number'
@@ -274,7 +276,7 @@ function CreateListing() {
                 </div>
               </div>
     
-              <label className='formLabel'>Parking spot</label>
+              <label className='formLabel'>{t('parkingSpot')}</label>
               <div className='formButtons'>
                 <button
                   className={parking ? 'formButtonActive' : 'formButton'}
@@ -285,7 +287,7 @@ function CreateListing() {
                   min='1'
                   max='50'
                 >
-                  Yes
+                  {t('yes')}
                 </button>
                 <button
                   className={
@@ -296,11 +298,11 @@ function CreateListing() {
                   value={false}
                   onClick={onMutate}
                 >
-                  No
+                  {t('no')}
                 </button>
               </div>
     
-              <label className='formLabel'>Furnished</label>
+              <label className='formLabel'>{t('furnished')}</label>
               <div className='formButtons'>
                 <button
                   className={furnished ? 'formButtonActive' : 'formButton'}
@@ -309,7 +311,7 @@ function CreateListing() {
                   value={true}
                   onClick={onMutate}
                 >
-                  Yes
+                  {t('yes')}
                 </button>
                 <button
                   className={
@@ -322,11 +324,11 @@ function CreateListing() {
                   value={false}
                   onClick={onMutate}
                 >
-                  No
+                  {t('no')}
                 </button>
               </div>
     
-              <label className='formLabel'>Address</label>
+              <label className='formLabel'>{t('address')}</label>
               <textarea
                 className='formInputAddress'
                 type='text'
@@ -363,7 +365,7 @@ function CreateListing() {
                 </div>
               )}
     
-              <label className='formLabel'>Offer</label>
+              <label className='formLabel'>{t('offer')}</label>
               <div className='formButtons'>
                 <button
                   className={offer ? 'formButtonActive' : 'formButton'}
@@ -372,7 +374,7 @@ function CreateListing() {
                   value={true}
                   onClick={onMutate}
                 >
-                  Yes
+                  {t('yes')}
                 </button>
                 <button
                   className={
@@ -383,11 +385,11 @@ function CreateListing() {
                   value={false}
                   onClick={onMutate}
                 >
-                  No
+                  {t('no')}
                 </button>
               </div>
     
-              <label className='formLabel'>Regular Price</label>
+              <label className='formLabel'>{t('regularPrice')}</label>
               <div className='formPriceDiv'>
                 <input
                   className='formInputSmall'
@@ -399,12 +401,12 @@ function CreateListing() {
                   max='750000000'
                   required
                 />
-                {type === 'rent' && <p className='formPriceText'>€ / Month</p>}
+                {type === 'rent' && <p className='formPriceText'>€ / {t('month')}</p>}
               </div>
     
               {offer && (
                 <>
-                  <label className='formLabel'>Discounted Price</label>
+                  <label className='formLabel'>{t('discountedPrice')}</label>
                   <input
                     className='formInputSmall'
                     type='number'
@@ -418,9 +420,9 @@ function CreateListing() {
                 </>
               )}
     
-              <label className='formLabel'>Images</label>
+              <label className='formLabel'>{t('images')}</label>
               <p className='imagesInfo'>
-                The first image will be the cover (max 6).
+                {t('imageLabel')}
               </p>
               <input
                 className='formInputFile'
@@ -433,7 +435,7 @@ function CreateListing() {
                 required
               />
               <button type='submit' className='primaryButton createListingButton'>
-                Create Listing
+                {t('createTitle')}
               </button>
             </form>
           </main>

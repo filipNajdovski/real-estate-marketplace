@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 import {collection, getDocs, query, orderBy, limit} from 'firebase/firestore'
 import { db } from '../firebase.config'
 import Spinner from './Spinner'
@@ -12,6 +13,7 @@ import 'swiper/css/scrollbar';
 
 
 function HomeSlider() {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true)
     const [listings, setListings] = useState(null)
 
@@ -52,7 +54,7 @@ function HomeSlider() {
 
     return listings && (
         <>
-            <p className="exploreHeading">Recommended</p>
+            <p className="exploreHeading">{t('recommended')}</p>
 
             <Swiper className='homeSlider' modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{clickable: true}}>
                 {listings.map(({data, id}) => (
@@ -60,7 +62,7 @@ function HomeSlider() {
                         <div style={{backgroundImage: `url(${data.imageUrls[0]})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'}} className="swiperSlideDiv">
                             <p className="swiperSlideText">{data.name}</p>
                             <p className="swiperSlidePrice">
-                                ${data.discountedPrice ?? data.regularPrice}
+                                {data.discountedPrice ?? data.regularPrice}€
                                 {data.type === 'rent' && ' / month'}
                             </p>
                         </div>
