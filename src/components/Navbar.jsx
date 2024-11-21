@@ -6,6 +6,8 @@ import {ReactComponent as OfferIcon} from '../assets/svg/localOfferIcon.svg'
 import {ReactComponent as ExploreIcon} from '../assets/svg/exploreIcon.svg'
 import {ReactComponent as PersonOutlineIcon} from '../assets/svg/personOutlineIcon.svg'
 import  logo from '../assets/png/nedviznini-logo-horizontal.png'
+import ukIcon from '../assets/lang/united-kingdom.png'
+import mkIcon from '../assets/lang/republic-of-macedonia.png'
 
 const languages = [
     { value: "en", text: "English" },
@@ -91,19 +93,33 @@ function Navbar() {
                             <p className={pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("profile")}</p>
                         </li>
                         <li>
-                        <select value={lang} onChange={handleChange}>
-                            {languages.map((item) => {
-                                return (
-                                    <option
-                                        key={item.value}
-                                        value={item.value}
-                                    >
-                                        {item.text}
-                                    </option>
-                                );
-                            })}
-                        </select>
+                            <select value={lang} onChange={handleChange}>
+                                {languages.map((item) => {
+                                    return (
+                                        <option
+                                            key={item.value}
+                                            value={item.value}
+                                        >
+                                            {item.text}
+                                        </option>
+                                    );
+                                })}
+                            </select>
                         </li>
+                        {/* <li>
+                            <div id="select-container">
+                                <ul>
+                                    <li lang-selection="FR" tooltip="FR" flow="down">
+                                    <img src={ukIcon} />
+                                    </li>
+
+                                    <li lang-selection="EN" tooltip="EN" flow="down" onclick="onSelect(this)">
+                                    <img src={mkIcon} />
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li> */}
                     </ul>
                 </nav>
             </div>
