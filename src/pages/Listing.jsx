@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { getDoc, doc } from 'firebase/firestore'
@@ -22,6 +23,7 @@ function Listing() {
   const navigate = useNavigate()
   const params = useParams()
   const auth = getAuth()
+  const {t} = useTranslation()
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -59,7 +61,7 @@ function Listing() {
           ))}
         </Swiper>
       ) : (
-        <p>No images available</p> // Placeholder if imgUrls is undefined or empty
+        <p>{t('noImages')}</p> // Placeholder if imgUrls is undefined or empty
       )}
 
       <div className="shareIconDiv" onClick={() => {
@@ -72,35 +74,35 @@ function Listing() {
         <img src={shareIcon} alt="share icon" />
       </div>
 
-      {shareLinkCopied && <p className='linkCopied'>Link Copied!</p>}
+      {shareLinkCopied && <p className='linkCopied'>{t('linkCopy')}</p>}
 
       <div className="listingDetails">
         <p className="listingName">{listing.name} - {listing.offer ? listing.discountedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : listing.regularPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}€</p>
         <p className="listingLocation">{listing.location}</p>
         <p className="listingType">
-          For {listing.type === 'rent' ? 'Rent' : 'Sale'}
+          {listing.type === 'rent' ? t('forRent') : t('forSale')}
         </p>
         {listing.offer && (
           <p className="discountPrice">
-            {listing.regularPrice - listing.discountedPrice}€ discount
+            {listing.regularPrice - listing.discountedPrice}€ {t('discount')}
           </p>
         )}
 
         <ul className="listingDetailsList">
           <li>
-            {listing.bedrooms > 1 ? `${listing.bedrooms} Bedrooms` : `1 Bedroom`}
+            {listing.bedrooms > 1 ? `${listing.bedrooms} ${t('bedrooms')}` : `1 ${t('bedroom')}`}
           </li>
 
           <li>
-            {listing.bathrooms > 1 ? `${listing.bathrooms} Bathrooms` : `1 Bathroom`}
+            {listing.bathrooms > 1 ? `${listing.bathrooms} ${t('bathrooms')}` : `1 ${t('bathroom')}`}
           </li>
 
-          <li>{listing.parking && 'Parking Spot'}</li>
+          <li>{listing.parking && t('parkingSpot')}</li>
 
-          <li>{listing.furnished && 'Furnished'}</li>
+          <li>{listing.furnished && t('furnished')}</li>
         </ul>
 
-        <p className="listingLocationTitle">Location</p>
+        <p className="listingLocationTitle">{t('location')}</p>
 
         {/* MAP */}
         <div className="leafletContainer">
@@ -114,7 +116,7 @@ function Listing() {
 
         {auth.currentUser?.uid !== listing.userRef && (
           <Link to={`/contact/${listing.userRef}?listingName=${listing.name}`} className='primaryButton'>
-            Contact Landlord
+            {t('contactLandlord')}
           </Link>
         )}
 

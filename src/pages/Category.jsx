@@ -1,5 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {useParams} from 'react-router-dom'
 import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'firebase/firestore'
 import {db} from '../firebase.config'
@@ -13,6 +14,7 @@ function Category() {
     const [lastFetchedListing, setLastFetchedListing] = useState(null)
 
     const params = useParams()
+    const {t} = useTranslation()
 
     useEffect(() => {
         const fetchListings = async () => {
@@ -83,7 +85,7 @@ function Category() {
     <div className='category'>
         <header>
             <p className="pageHeader">
-                {params.categoryName === 'rent' ? 'Places for rent' : 'Places for sale' }
+                {params.categoryName === 'rent' ? t('forRent') : t('forSale')}
             </p>
         </header>
 
@@ -102,11 +104,11 @@ function Category() {
             <br />
             <br />
             {lastFetchedListing && (
-                <p className="loadMore" onClick={onFetchMoreListings}>Load More</p>
+                <p className="loadMore" onClick={onFetchMoreListings}>{t('loadMore')}</p>
             )}
             </>
         ) : (
-            <p>No listings for {params.categoryName}</p>
+            <p>{t('noListings')} {params.categoryName === 'rent' ? t('forRent') : t('forSale')}</p>
         )
         }
     </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 // import {useParams} from 'react-router-dom'
 import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'firebase/firestore'
 import {db} from '../firebase.config'
@@ -11,6 +12,7 @@ function Offers() {
     const [listings, setListings] = useState(null)
     const [loading, setLoading] = useState(true)
     const [lastFetchedListing, setLastFetchedListing] = useState(null)
+    const {t} = useTranslation()
 
     // const params = useParams()
 
@@ -41,7 +43,7 @@ function Offers() {
                 setListings(listings)
                 setLoading(false)
             } catch (error) {
-                toast.error('Could not fetch listings!')
+                toast.error(t('fetchListingsError'))
             }
         }
 
@@ -75,7 +77,7 @@ function Offers() {
             setListings((prevState) => [...prevState, ...listings])
             setLoading(false)
         } catch (error) {
-            toast.error('Could not fetch properties!')
+            toast.error(t('fetchListingsError'))
         }
     }
 
@@ -83,7 +85,7 @@ function Offers() {
     <div className='category'>
         <header>
             <p className="pageHeader">
-                Offers
+                {t('offers')}
             </p>
         </header>
 
@@ -102,11 +104,11 @@ function Offers() {
             <br />
             <br />
             {lastFetchedListing && (
-                <p className="loadMore" onClick={onFetchMoreListings}>Load More</p>
+                <p className="loadMore" onClick={onFetchMoreListings}>{t('loadMore')}</p>
             )}
             </>
         ) : (
-            <p>There are no current offers</p>
+            <p>{t('noOffers')}</p>
         )
         }
     </div>

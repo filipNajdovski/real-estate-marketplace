@@ -63,7 +63,7 @@ function HomeSlider() {
                             <p className="swiperSlideText">{data.name}</p>
                             <p className="swiperSlidePrice">
                                 {data.discountedPrice ?? data.regularPrice}€
-                                {data.type === 'rent' && ' / month'}
+                                {data.type === 'rent' && '/ ' + t('month')}
                             </p>
                         </div>
                     </SwiperSlide>

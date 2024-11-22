@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import {Link, useNavigate} from 'react-router-dom'
 import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
@@ -19,6 +20,7 @@ function SignUp() {
   const {name, email, password} = formData
 
   const navigate = useNavigate()
+  const {t} = useTranslation()
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -48,7 +50,7 @@ function SignUp() {
 
       navigate('/')
     }catch (error){
-      toast.error('Something went wrong!')
+      toast.error(t('somethingWrong'))
     }
   }
 
@@ -57,7 +59,7 @@ function SignUp() {
       <div className="pageContainer">
         <header>
           <p className="pageHeader">
-            Welcome Back!
+            {t('welcome')}
           </p>
         </header>
         
@@ -70,12 +72,12 @@ function SignUp() {
           </div>
 
           <Link to='/forgot-password' className='forgotPasswordLink' >
-            Forgot Password
+            {t('forgotPassword')}
           </Link>
 
           <div className="signUpBar">
             <p className="signUpText">
-              Sign Up
+              {t('signUp')}
             </p>
             <button className="signUpButton">
               <ArrowRightIcon fill='#ffffff' width='34px' height='34px' />
@@ -86,7 +88,7 @@ function SignUp() {
         <OAuth />
 
         <Link to='/sign-in' className='registerLink'>
-          Already a user? Sign in
+          {t('alreadyAUser')}
         </Link>
       </div>
     </>

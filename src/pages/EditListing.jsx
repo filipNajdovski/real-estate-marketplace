@@ -10,6 +10,7 @@ import {
 import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Spinner from '../components/Spinner'
 import {v4 as uuidv4} from 'uuid'
 import { toast } from 'react-toastify'
@@ -42,11 +43,12 @@ function EditListing() {
     const navigate = useNavigate()
     const params = useParams()
     const isMounted = useRef(true)
+    const {t} = useTranslation()
 
     // Redirect if listing it's not this user's
     useEffect(() => {
         if(listing && listing.userRef !== auth.currentUser.uid){
-            toast.error('You can not edit that property')
+            toast.error(t('editListingError'))
             navigate('/')
         }
     }, [auth.currentUser.uid, listing, navigate])
@@ -64,7 +66,7 @@ function EditListing() {
                 setLoading(false)
             } else {
                 navigate('/')
-                toast.error("Property dosen't exist")
+                toast.error(t('propertyExistError'))
             }
         }
 
@@ -96,13 +98,13 @@ function EditListing() {
         
         if(discountedPrice >= regularPrice){
             setLoading(false)
-            toast.error('Discounted price needs to be less than regular price')
+            toast.error(t('discountError'))
             return
         }
 
         if(images.length > 6) {
             setLoading(false)
-            toast.error('Maximum 6 images')
+            toast.error(t('imagesError'))
             return
         }
 
@@ -121,7 +123,7 @@ function EditListing() {
 
             if(location === undefined || location.includes('undefined')){
                 setLoading(false)
-                toast.error('Please enter a correct address!')
+                toast.error(t('addressError'))
                 return
             }
 
@@ -175,7 +177,7 @@ function EditListing() {
             [...images].map((image) => storeImage(image))
         ).catch(() => {
             setLoading(false)
-            toast.error('Images not uploaded')
+            toast.error(t('imagesUploadError'))
             return
         })
 
@@ -238,12 +240,12 @@ function EditListing() {
     return (
         <div className='profile'>
           <header>
-            <p className='pageHeader'>Edit Listing</p>
+            <p className='pageHeader'>{t('editListing')}</p>
           </header>
     
           <main>
             <form onSubmit={onSubmit}>
-              <label className='formLabel'>Sell / Rent</label>
+              <label className='formLabel'>{t('sellOrRentCreate')}</label>
               <div className='formButtons'>
                 <button
                   type='button'
@@ -252,7 +254,7 @@ function EditListing() {
                   value='sale'
                   onClick={onMutate}
                 >
-                  Sell
+                  {t('sell')}
                 </button>
                 <button
                   type='button'
@@ -261,11 +263,11 @@ function EditListing() {
                   value='rent'
                   onClick={onMutate}
                 >
-                  Rent
+                  {t('rent')}
                 </button>
               </div>
     
-              <label className='formLabel'>Name</label>
+              <label className='formLabel'>{t('name')}</label>
               <input
                 className='formInputName'
                 type='text'
@@ -279,7 +281,7 @@ function EditListing() {
     
               <div className='formRooms flex'>
                 <div>
-                  <label className='formLabel'>Bedrooms</label>
+                  <label className='formLabel'>{t('bedrooms')}</label>
                   <input
                     className='formInputSmall'
                     type='number'
@@ -292,7 +294,7 @@ function EditListing() {
                   />
                 </div>
                 <div>
-                  <label className='formLabel'>Bathrooms</label>
+                  <label className='formLabel'>{t('bathrooms')}</label>
                   <input
                     className='formInputSmall'
                     type='number'
@@ -306,7 +308,7 @@ function EditListing() {
                 </div>
               </div>
     
-              <label className='formLabel'>Parking spot</label>
+              <label className='formLabel'>{t('parkingSpot')}</label>
               <div className='formButtons'>
                 <button
                   className={parking ? 'formButtonActive' : 'formButton'}
@@ -317,7 +319,7 @@ function EditListing() {
                   min='1'
                   max='50'
                 >
-                  Yes
+                  {t('yes')}
                 </button>
                 <button
                   className={
@@ -328,11 +330,11 @@ function EditListing() {
                   value={false}
                   onClick={onMutate}
                 >
-                  No
+                  {t('no')}
                 </button>
               </div>
     
-              <label className='formLabel'>Furnished</label>
+              <label className='formLabel'>{t('furnished')}</label>
               <div className='formButtons'>
                 <button
                   className={furnished ? 'formButtonActive' : 'formButton'}
@@ -341,7 +343,7 @@ function EditListing() {
                   value={true}
                   onClick={onMutate}
                 >
-                  Yes
+                  {t('yes')}
                 </button>
                 <button
                   className={
@@ -354,11 +356,11 @@ function EditListing() {
                   value={false}
                   onClick={onMutate}
                 >
-                  No
+                  {t('no')}
                 </button>
               </div>
     
-              <label className='formLabel'>Address</label>
+              <label className='formLabel'>{t('address')}</label>
               <textarea
                 className='formInputAddress'
                 type='text'
@@ -395,7 +397,7 @@ function EditListing() {
                 </div>
               )}
     
-              <label className='formLabel'>Offer</label>
+              <label className='formLabel'>{t('offer')}</label>
               <div className='formButtons'>
                 <button
                   className={offer ? 'formButtonActive' : 'formButton'}
@@ -404,7 +406,7 @@ function EditListing() {
                   value={true}
                   onClick={onMutate}
                 >
-                  Yes
+                  {t('yes')}
                 </button>
                 <button
                   className={
@@ -415,11 +417,11 @@ function EditListing() {
                   value={false}
                   onClick={onMutate}
                 >
-                  No
+                  {t('no')}
                 </button>
               </div>
     
-              <label className='formLabel'>Regular Price</label>
+              <label className='formLabel'>{t('regularPrice')}</label>
               <div className='formPriceDiv'>
                 <input
                   className='formInputSmall'
@@ -431,12 +433,12 @@ function EditListing() {
                   max='750000000'
                   required
                 />
-                {type === 'rent' && <p className='formPriceText'>€ / Month</p>}
+                {type === 'rent' && <p className='formPriceText'>€ / {t('month')}</p>}
               </div>
     
               {offer && (
                 <>
-                  <label className='formLabel'>Discounted Price</label>
+                  <label className='formLabel'>{t('discountedPrice')}</label>
                   <input
                     className='formInputSmall'
                     type='number'
@@ -450,9 +452,9 @@ function EditListing() {
                 </>
               )}
     
-              <label className='formLabel'>Images</label>
+              <label className='formLabel'>{t('images')}</label>
               <p className='imagesInfo'>
-                The first image will be the cover (max 6).
+                {t('imageLabel')}
               </p>
               <input
                 className='formInputFile'
@@ -465,7 +467,7 @@ function EditListing() {
                 required
               />
               <button type='submit' className='primaryButton createListingButton'>
-                Save Property
+                {t('saveListing')}
               </button>
             </form>
           </main>

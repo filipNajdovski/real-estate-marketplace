@@ -67,13 +67,13 @@ function CreateListing() {
         
         if(discountedPrice >= regularPrice){
             setLoading(false)
-            toast.error('Discounted price needs to be less than regular price')
+            toast.error(t('discountError'))
             return
         }
 
         if(images.length > 6) {
             setLoading(false)
-            toast.error('Maximum 6 images')
+            toast.error(t('imagesError'))
             return
         }
 
@@ -92,7 +92,7 @@ function CreateListing() {
 
             if(location === undefined || location.includes('undefined')){
                 setLoading(false)
-                toast.error('Please enter a correct address!')
+                toast.error(t('addressError'))
                 return
             }
 
@@ -146,7 +146,7 @@ function CreateListing() {
             [...images].map((image) => storeImage(image))
         ).catch(() => {
             setLoading(false)
-            toast.error('Images not uploaded')
+            toast.error(t('imagesUploadError'))
             return
         })
 
@@ -166,7 +166,7 @@ function CreateListing() {
 
         setLoading(false)
 
-        toast.success('Listing saved')
+        toast.success(t('addListingSuccess'))
         navigate(`/category/${formDataCopy.type}/${docRef.id}`)
     }
 

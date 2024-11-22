@@ -1,6 +1,7 @@
 import React from 'react'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {Link, useNavigate} from 'react-router-dom'
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
 import {ReactComponent as ArrowRightIcon} from '../assets/svg/keyboardArrowRightIcon.svg'
@@ -16,6 +17,7 @@ function SignIn() {
   const {email, password} = formData
 
   const navigate = useNavigate()
+  const {t} = useTranslation()
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -45,7 +47,7 @@ function SignIn() {
       <div className="pageContainer">
         <header>
           <p className="pageHeader">
-            Welcome Back!
+            {t('welcome')}
           </p>
         </header>
         
@@ -57,12 +59,12 @@ function SignIn() {
           </div>
 
           <Link to='/forgot-password' className='forgotPasswordLink' >
-            Forgot Password
+            {t('forgotPassword')}
           </Link>
 
           <div className="signInBar">
             <p className="signInText">
-              Sign In
+              {t('signIn')}
             </p>
             <button className="signInButton">
               <ArrowRightIcon fill='#ffffff' width='34px' height='34px' />
@@ -73,7 +75,7 @@ function SignIn() {
         <OAuth />
 
         <Link to='/sign-up' className='registerLink'>
-          Sign Up Instead
+          {t('signUp')}
         </Link>
       </div>
     </>

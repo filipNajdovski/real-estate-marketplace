@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 
 function Contact() {
+  const {t} = useTranslation()
   const [message, setMessage] = useState('');
   const [landlord, setLandlord] = useState(null);
   const [searchParams] = useSearchParams();  // You likely don't need setSearchParams
@@ -31,18 +33,18 @@ function Contact() {
   return (
     <div className="pageContainer">
       <header>
-        <p className="pageHeader">Contact Landlord</p>
+        <p className="pageHeader">{t('contactLandlord')}</p>
       </header>
 
       {landlord !== null && (
         <main>
           <div className="contactLandlord">
-            <p className="landlordName">Contact {landlord?.name}</p>
+            <p className="landlordName">{t('contact')} {landlord?.name}</p>
           </div>
 
           <form className="messageForm">
             <div className="messageDiv">
-              <label htmlFor="message" className="messageLabel">Message</label>
+              <label htmlFor="message" className="messageLabel">{t('message')}</label>
               <textarea
                 name="message"
                 id="message"
@@ -52,7 +54,7 @@ function Contact() {
               ></textarea>
             </div>
             <a href={`mailto:${landlord.email}?Subject=${searchParams.get('listingName')}&body=${message}`}>
-                <button type="button" className="primaryButton">Send message</button>
+                <button type="button" className="primaryButton">{t('sendMessage')}</button>
             </a>
           </form>
         </main>

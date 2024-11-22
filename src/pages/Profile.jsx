@@ -71,7 +71,7 @@ function Profile() {
         })
       }
     } catch (error) {
-      toast.error('Could not update profile details')
+      toast.error(t('unableUpdateProfile'))
     }
   }
 
@@ -83,12 +83,12 @@ function Profile() {
   }
 
   const onDelete = async (listingId) => {
-    if(window.confirm('Are you sure you want to delete this property?')){
+    if(window.confirm(t('confirmDeleteProperty'))){
       await deleteDoc(doc(db, 'listings', listingId))
       const updatedListings = listings.filter((listing) => listing.id !== listingId)
 
       setListings(updatedListings)
-      toast.success('Successfully deleted property')
+      toast.success(t('succesDeletePropery'))
     }
   }
 
@@ -97,7 +97,7 @@ function Profile() {
   return <div className='profile'>
     <header className="profileHeader">
       <p className="pageHeader">{t("myProfile")}</p>
-      <button type='button' onClick={onLogout} className="logOut">Logout</button>
+      <button type='button' onClick={onLogout} className="logOut">{t('logout')}</button>
     </header>
 
     <main>
@@ -125,7 +125,7 @@ function Profile() {
 
       {!loading && listings?.length > 0 && (
         <>
-          <p className="listingText">Your Properties</p>
+          <p className="listingText">{t('yourProperties')}</p>
           <ul className="listingsList">
             {listings.map((listing) => (
               <ListingItem key={listing.id} listing={listing.data} id={listing.id} onDelete={() => onDelete(listing.id)} onEdit={() => onEdit(listing.id)} />

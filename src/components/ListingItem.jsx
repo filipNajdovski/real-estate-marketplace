@@ -1,11 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {ReactComponent as DeleteIcon} from '../assets/svg/deleteIcon.svg'
 import {ReactComponent as EditIcon} from '../assets/svg/editIcon.svg'
 import bedIcon from '../assets/svg/bedIcon.svg'
 import bathtubIcon from '../assets/svg/bathtubIcon.svg'
 
 function ListingItem({listing, id, onDelete, onEdit}) {
+    const {t} = useTranslation()
   return (
     <li className="categoryListing">
         <Link to={`/category/${listing.type}/${id}`} className='categoryListingLink'>
@@ -19,16 +21,16 @@ function ListingItem({listing, id, onDelete, onEdit}) {
                 </p>
                 <p className="categoryListingPrice">
                     {listing.offer ? listing.discountedPrice : listing.regularPrice}€
-                    {listing.type === 'rent' && ' / Month'}
+                    {listing.type === 'rent' && ' / ' + t('month')}
                 </p>
                 <div className="categoryListingInfoDiv">
                     <img src={bedIcon} alt="bed" />
                     <p className="categoryListingInfoText">
-                        {listing.bedrooms > 1 ? `${listing.bedrooms} bedrooms` : `${listing.bedrooms} bedroom`}
+                        {listing.bedrooms > 1 ? `${listing.bedrooms} ${t('bedrooms')}` : `${listing.bedrooms} ${t('bedroom')}`}
                     </p>
                     <img src={bathtubIcon} alt="bath" />
                     <p className="categoryListingInfoText">
-                        {listing.bathrooms > 1 ? `${listing.bathrooms} bathrooms` : `${listing.bedrooms} bathroom`}
+                        {listing.bathrooms > 1 ? `${listing.bathrooms} ${t('bathrooms')}` : `${listing.bedrooms} ${t('bathroom')}`}
                     </p>
                 </div>
             </div>
