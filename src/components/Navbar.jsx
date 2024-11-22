@@ -44,9 +44,6 @@ function Navbar() {
               <PersonOutlineIcon fill={pathMatchRoute('/profile') ? '#2c2c2c' : '#8f8f8f'} width='36px' height='36px' />
               <p className={pathMatchRoute('/profile') ? 'navbarListItemNameActive' : 'navbarListItemName'}>{t("profile")}</p>
             </li>
-            <li>
-              <LanguageSelect />
-            </li>
           </ul>
         </nav>
       </footer>
