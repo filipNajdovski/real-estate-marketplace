@@ -935,6 +935,13 @@ button {
     align-items: center;
     gap: 8px;
   }
+
+  .select {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-75px);
+    top: 20px;
+  }
 }
 
 .explore header {
@@ -942,3 +949,4 @@ button {
   align-items: center;
   justify-content: space-between;
 }
+
