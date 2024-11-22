@@ -890,10 +890,18 @@ button {
   height: 33vh;
 }
 
+.listingSwiper{
+  height: 33vh;
+}
+
 @media (min-width: 1024px) {
   .homeSlider {
     height: 60vh;
     width: 85vw;
+  }
+
+  .listingSwiper{
+    height: 80vh;
   }
 
   .footerContainer{
