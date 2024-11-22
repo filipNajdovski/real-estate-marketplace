@@ -41,7 +41,7 @@ function Explore() {
       <header>
         <p className="pageHeader">{t("exploreTitle")}</p>
         {screenWidth < 1024 && (
-          <div style={{ position: "relative", width: 200 }}>
+          <div style={{ position: "relative", width: 150 }}>
             {/* Dropdown Trigger */}
             <div
               onClick={toggleDropdown}
