@@ -48,7 +48,7 @@ function Listing() {
     <main>
       {console.log(listing.imageUrls[1])}      
       {listing?.imageUrls?.length > 0 ? (
-        <Swiper style={{height: '33vh'}} modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{ clickable: true }}>
+        <Swiper className='listingSwiper' style={{height: '33vh'}} modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{ clickable: true }}>
           {listing.imageUrls.map((url, index) => (
             <SwiperSlide key={index}>
               <div
