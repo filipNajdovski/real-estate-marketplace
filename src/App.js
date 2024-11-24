@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import { useState, useEffect } from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -48,6 +49,7 @@ function App() {
       </Routes>
       <Navbar />
       {screenWidth >= 1024 && <Footer />}
+      <SpeedInsights />
     </Router>
     <ToastContainer />
     </>
