@@ -48,7 +48,7 @@ function Offers() {
         }
 
         fetchListings()
-    }, [])
+    }, [t])
 
     //Pagination / Load More
     const onFetchMoreListings = async () => {

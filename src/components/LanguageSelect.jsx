@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import i18next from "i18next";
 import ukIcon from "../assets/lang/united-kingdom.png";
 import mkIcon from "../assets/lang/republic-of-macedonia.png";

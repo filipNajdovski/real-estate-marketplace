@@ -22,7 +22,7 @@ function Explore() {
   return (
     <div className="explore">
       <header>
-        <p className="pageHeader">{t("exploreTitle")}</p>
+        <h3 className="pageHeader">{t("exploreTitle")}</h3>
         {screenWidth < 1024 && (
           <LanguageSelect />
         )}
@@ -31,6 +31,10 @@ function Explore() {
 
       <main>
         <HomeSlider />
+
+        <h1 className="pageHeading">Дигитална Агенција за Недвижнини во Македонија</h1>
+
+        <p className="primaryParagraph">Барате идеален дом, деловен простор или простор за забава? Недвижнини е вашата дестинација за лесно и брзо пронаоѓање и купување или изнајмување недвижности низ цела Македонија.</p>
 
         <p className="exploreCategoryHeading">{t("categories")}</p>
         <div className="exploreCategories">
@@ -51,6 +55,27 @@ function Explore() {
             <p className="exploreCategoryName">{t("forSale")}</p>
           </Link>
         </div>
+        <section className="about">
+          <div className="ablotList">
+            <p className="aboutListHeading">Што Нудиме?</p>
+            <h3 className="aboutListItem">Станови и Куќи за Продажба и Изнајмување: Од урбани станови во центарот на градовите до мирни семејни куќи.</h3>
+            <h3 className="aboutListItem">Деловни Простори: Најдете совршено место за вашата компанија или старт-ап</h3>
+            <h3 className="aboutListItem">Простори за Забава: Локации за ресторани, кафулиња, или настани што ќе го остават вашиот печат</h3>
+          </div>
+          <div className="ablotList">
+            <p className="aboutListHeading">Зошто да Изберете Недвижни?</p>
+            <h3 className="aboutListItem">Богата Понуда: Илјадници огласи за продажба и изнајмување.</h3>
+            <h3 className="aboutListItem">Прецизно Пребарување: Филтрирајте според локација, цена, тип на недвижност, и повеќе.</h3>
+            <h3 className="aboutListItem">Лесно Поврзување: Контактирајте директно со сопствениците или агентите.</h3>
+            <h3 className="aboutListItem">Локален Фокус: Секогаш ажурирана понуда низ сите региони на Македонија.</h3>
+          </div>
+          <div className="ablotList">
+            <p className="aboutListHeading">Како Функционира?</p>
+            <h3 className="aboutListItem">Пребарајте ја базата на недвижности.</h3>
+            <h3 className="aboutListItem">Изберете недвижност што одговара на вашите потреби.</h3>
+            <h3 className="aboutListItem">Поврзете се со сопствениците или агентите за дополнителни информации.</h3>
+          </div>
+        </section>
       </main>
     </div>
   );

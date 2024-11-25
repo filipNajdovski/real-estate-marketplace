@@ -58,7 +58,7 @@ function CreateListing() {
             isMounted.current = false
         }
         // esling-disable-next-line react-hooks/exhaustive-deps
-    }, [isMounted])
+    }, [isMounted, auth, formData, navigate])
 
     const onSubmit = async (e) => {
         e.preventDefault()

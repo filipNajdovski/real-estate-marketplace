@@ -436,6 +436,23 @@ button {
   }
 }
 
+.pageHeading{
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.primaryParagraph {
+  font-size: 1rem;
+  text-align: left;
+}
+@media (min-width: 1024px) {
+  .primaryParagraph {
+    font-size: 1.4rem;
+    text-align: left;
+  }
+}
+
 .exploreCategories {
   display: flex;
   justify-content: space-between;
@@ -456,6 +473,31 @@ button {
 .exploreCategoryName {
   font-weight: 500;
   text-align: left;
+}
+
+.about{
+  display: flex;
+  flex-direction: column;
+}
+
+.aboutListHeading {
+  font-size: 1.2rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+@media (min-width: 1024px) {
+  .aboutListHeading {
+    font-size: 1.4rem;
+    text-align: left;
+    font-weight: 500;
+  }
+}
+
+.aboutListItem{
+  font-size: 1rem;
+  text-align: left;
+  font-weight: 400;
 }
 
 .category {
