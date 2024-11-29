@@ -79,7 +79,7 @@ function SignUp() {
             <p className="signUpText">
               {t('signUp')}
             </p>
-            <button className="signUpButton">
+            <button type='submit' className="signUpButton">
               <ArrowRightIcon fill='#ffffff' width='34px' height='34px' />
             </button>
           </div>

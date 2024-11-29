@@ -66,7 +66,7 @@ function SignIn() {
             <p className="signInText">
               {t('signIn')}
             </p>
-            <button className="signInButton">
+            <button type='submit' className="signInButton">
               <ArrowRightIcon fill='#ffffff' width='34px' height='34px' />
             </button>
           </div>
