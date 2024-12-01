@@ -853,6 +853,9 @@ button {
 .flex {
   display: flex;
 }
+.formLatLng{
+  flex-direction: column;
+}
 
 .formInput,
 .formInputAddress,

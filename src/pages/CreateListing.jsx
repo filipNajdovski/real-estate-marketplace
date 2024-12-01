@@ -1,209 +1,202 @@
-import React from 'react'
-import { useState, useEffect, useRef } from 'react'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { 
-    getStorage,
-    ref,
-    uploadBytesResumable,
-    getDownloadURL 
-} from 'firebase/storage'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import React, { useState, useEffect, useRef } from "react";
+import {
+  getAuth,
+  onAuthStateChanged,
+} from "firebase/auth";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase.config";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
+import imageCompression from "browser-image-compression";
+import { v4 as uuidv4 } from "uuid";
 import { useTranslation } from "react-i18next";
-import { db } from '../firebase.config'
-import { useNavigate } from 'react-router-dom'
-import Spinner from '../components/Spinner'
-import {v4 as uuidv4} from 'uuid'
-import { toast } from 'react-toastify'
-
 
 function CreateListing() {
-    // eslint-disable-next-line no-unused-vars
-    const [geolocationEnabled, setGeoLocationEnabled] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [formData, setFormData] = useState({
-        type: 'rent',
-        name: '',
-        bedrooms: '1',
-        bathrooms: '1',
-        parking: false,
-        furnished: false,
-        address: '',
-        offer: false,
-        regularPrice: 0,
-        discountedPrice: 0,
-        images: {},
-        latitude: 0,
-        longitude: 0
-    })
+  const [geolocationEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    type: "rent",
+    propertyType: "apartment", // New field
+    name: "",
+    bedrooms: "1",
+    bathrooms: "1",
+    parking: false,
+    furnished: false,
+    address: "",
+    offer: false,
+    regularPrice: 0,
+    discountedPrice: 0,
+    images: {},
+    latitude: 0,
+    longitude: 0,
+    yard: false,
+    rooms: "0",
+    squareMeters: "100",
+    yardSquareMeters: "50",
+    balcony: true,
+    elevator: false,
+    floorNumber: "1",
+  });
 
-    const { type, name, bedrooms, bathrooms, parking, furnished, address, offer, regularPrice, discountedPrice, images, latitude, longitude } = formData
+  const {
+    type,
+    propertyType,
+    name,
+    bedrooms,
+    bathrooms,
+    parking,
+    furnished,
+    address,
+    offer,
+    regularPrice,
+    discountedPrice,
+    images,
+    latitude,
+    longitude,
+    yard,
+    rooms,
+    squareMeters,
+    yardSquareMeters,
+    balcony,
+    elevator,
+    floorNumber,
+  } = formData;
 
-    const { t } = useTranslation()
-    const auth = getAuth()
-    const navigate = useNavigate()
-    const isMounted = useRef(true)
+  const navigate = useNavigate();
+  const auth = getAuth();
+  const isMounted = useRef(true);
+  const {t} = useTranslation()
 
-    useEffect(() => {
-        if (isMounted){
-            onAuthStateChanged(auth, (user) => {
-                if(user) {
-                    setFormData({...formData, userRef: user.uid})
-                } else {
-                    navigate('/sign-in')
-                }
-            })
-        }
-
-        return () => {
-            isMounted.current = false
-        }
-        // esling-disable-next-line react-hooks/exhaustive-deps
-    }, [isMounted, auth, formData, navigate])
-
-    const onSubmit = async (e) => {
-        e.preventDefault()
-
-        setLoading(true)
-        
-        if(discountedPrice >= regularPrice){
-            setLoading(false)
-            toast.error(t('discountError'))
-            return
-        }
-
-        if(images.length > 6) {
-            setLoading(false)
-            toast.error(t('imagesError'))
-            return
-        }
-
-        let geolocation = {}
-        let location
-
-        if(geolocationEnabled) {
-            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDcN0zgRp10f2eY0_DpHpZPIz5PmVHXSvI`)
-
-            const data = response.json()
-
-            geolocation.lat = data.results[0]?.geometry.location.lat ?? 0
-            geolocation.lng = data.results[0]?.geometry.location.lng ?? 0
-
-            location = data.status === 'ZERO_RESULTS' ? undefined : data.results[0].formatted_address
-
-            if(location === undefined || location.includes('undefined')){
-                setLoading(false)
-                toast.error(t('addressError'))
-                return
-            }
-
-            // console.log(data)
+  useEffect(() => {
+    if (isMounted) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setFormData({ ...formData, userRef: user.uid });
         } else {
-            geolocation.lat = latitude
-            geolocation.lng = longitude
-            location = address
+          navigate("/sign-in");
         }
+      });
+    }
+    return () => {
+      isMounted.current = false;
+    };
+  }, [isMounted, auth, navigate]);
 
-        // Store images in firebase
-        const storeImage = async (image) => {
-            return new Promise((resolve, reject) => {
-                const storage = getStorage()
-                const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-                const storageRef = ref(storage, 'images/' + fileName)
-
-                const uploadTask = uploadBytesResumable(storageRef, image)
-
-                uploadTask.on('state_changed', 
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + progress + '% done');
-                    switch (snapshot.state) {
-                    case 'paused':
-                        console.log('Upload is paused');
-                        break;
-                    case 'running':
-                        console.log('Upload is running');
-                        break;
-                    default:
-                        break;
-                    }
-                }, 
-                (error) => {
-                    reject(error)
-                }, 
-                () => {
-                    // Handle successful uploads on complete
-                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    resolve(downloadURL);
-                    });
-                }
-                );
-            })
-        }
-
-        const imageUrls = await Promise.all(
-            [...images].map((image) => storeImage(image))
-        ).catch(() => {
-            setLoading(false)
-            toast.error(t('imagesUploadError'))
-            return
-        })
-
-        const formDataCopy = {
-            ...formData,
-            imageUrls,
-            geolocation,
-            timestamp: serverTimestamp()
-        }
-
-        delete formDataCopy.images
-        delete formDataCopy.address
-        location && (formDataCopy.location = location)
-        !formDataCopy.offer && delete formDataCopy.discountedPrice
-
-        const docRef = await addDoc(collection(db, 'listings'), formDataCopy)
-
-        setLoading(false)
-
-        toast.success(t('addListingSuccess'))
-        navigate(`/category/${formDataCopy.type}/${docRef.id}`)
+    if (discountedPrice >= regularPrice) {
+      setLoading(false);
+      toast.error("Discounted price should be less than regular price.");
+      return;
     }
 
-    const onMutate = (e) => {
-        let boolean = null
-
-        if(e.target.value === 'true') {
-            boolean = true
-        } 
-        if(e.target.value === 'false') {
-            boolean = false
-        }
-
-        // Files
-        if(e.target.files) {
-            setFormData((prevState) => ({
-                ...prevState,
-                images: e.target.files
-            }))
-        }
-
-        if(!e.target.files) {
-            setFormData((prevState) => ({
-                ...prevState,
-                [e.target.id]: boolean ?? e.target.value
-            }))
-        }
-
-
-
-
-        // Text/Booleans/Numbers
+    if (images.length > 6) {
+      setLoading(false);
+      toast.error("Max 6 images allowed.");
+      return;
     }
 
-    if(loading) {
-        return <Spinner />
+    let geolocation = {};
+    let location = address;
+
+    if (geolocationEnabled) {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=YOUR_API_KEY`
+      );
+      const data = await response.json();
+      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
+      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
+      location =
+        data.status === "ZERO_RESULTS"
+          ? undefined
+          : data.results[0]?.formatted_address;
+
+      if (!location) {
+        setLoading(false);
+        toast.error("Invalid address.");
+        return;
+      }
+    } else {
+      geolocation.lat = latitude;
+      geolocation.lng = longitude;
     }
+
+    const storeImage = async (image) => {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1024,
+        useWebWorker: true,
+      };
+      const compressedImage = await imageCompression(image, options);
+      const storage = getStorage();
+      const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
+      const storageRef = ref(storage, `images/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, compressedImage);
+
+      return new Promise((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          null,
+          reject,
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then(resolve);
+          }
+        );
+      });
+    };
+
+    const imageUrls = await Promise.all(
+      [...images].map((image) => storeImage(image))
+    ).catch(() => {
+      setLoading(false);
+      toast.error("Image upload failed.");
+      return;
+    });
+
+    const formDataCopy = {
+      ...formData,
+      geolocation,
+      location,
+      imageUrls,
+      timestamp: serverTimestamp(),
+    };
+
+    delete formDataCopy.images;
+
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+    setLoading(false);
+    toast.success("Listing created successfully!");
+    navigate(`/category/${formDataCopy.type}/${docRef.id}`);
+  };
+
+  const onMutate = (e) => {
+    let boolean = null;
+    if (e.target.value === "true") boolean = true;
+    if (e.target.value === "false") boolean = false;
+
+    if (e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        images: e.target.files,
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: boolean ?? e.target.value,
+      }));
+    }
+  };
+
+  if (loading) return <Spinner />;
 
     return (
         <div className='profile'>
@@ -234,6 +227,19 @@ function CreateListing() {
                   {t('rent')}
                 </button>
               </div>
+
+              <label className="formLabel">Property Type</label>
+              <select
+                id="propertyType"
+                value={propertyType}
+                onChange={onMutate}
+                className="formInput"
+              >
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+                <option value="businessPlace">Business Place</option>
+                <option value="holidayHome">Holiday Home</option>
+              </select>
     
               <label className='formLabel'>{t('name')}</label>
               <input
@@ -246,6 +252,66 @@ function CreateListing() {
                 minLength='10'
                 required
               />
+
+              <label className="formLabel">Square Meters</label>
+              <input
+              className="formInputSmall"
+                type="number"
+                id="squareMeters"
+                value={squareMeters}
+                onChange={onMutate}
+                required
+              />
+
+              <label className='formLabel'>{t('yard')}</label>
+              <div className='formButtons'>
+                <button
+                  className={yard ? 'formButtonActive' : 'formButton'}
+                  type='button'
+                  id='yard'
+                  value={true}
+                  onClick={onMutate}
+                >
+                  {t('yes')}
+                </button>
+                <button
+                  className={
+                    !yard && yard !== null
+                      ? 'formButtonActive'
+                      : 'formButton'
+                  }
+                  type='button'
+                  id='yard'
+                  value={false}
+                  onClick={onMutate}
+                >
+                  {t('no')}
+                </button>
+              </div>
+
+              <label className="formLabel">Yard Square Meters</label>
+              <input
+                type="number"
+                id="yardSquareMeters"
+                className="formInputSmall"
+                value={yardSquareMeters}
+                onChange={onMutate}
+                required
+              />
+
+              <div>
+                <label className='formLabel'>{t('rooms')}</label>
+                <input
+                  className='formInputSmall'
+                  type='number'
+                  id='rooms'
+                  value={rooms}
+                  onChange={onMutate}
+                  min='1'
+                  max='50'
+                  required
+                />
+              </div>
     
               <div className='formRooms flex'>
                 <div>
@@ -295,6 +361,72 @@ function CreateListing() {
                   }
                   type='button'
                   id='parking'
+                  value={false}
+                  onClick={onMutate}
+                >
+                  {t('no')}
+                </button>
+              </div>
+
+              <label className='formLabel'>{t('balcony')}</label>
+              <div className='formButtons'>
+                <button
+                  className={balcony ? 'formButtonActive' : 'formButton'}
+                  type='button'
+                  id='balcony'
+                  value={true}
+                  onClick={onMutate}
+                >
+                  {t('yes')}
+                </button>
+                <button
+                  className={
+                    !balcony && balcony !== null
+                      ? 'formButtonActive'
+                      : 'formButton'
+                  }
+                  type='button'
+                  id='yard'
+                  value={false}
+                  onClick={onMutate}
+                >
+                  {t('no')}
+                </button>
+              </div>
+
+              <div>
+                <label className='formLabel'>{t('floorNumber')}</label>
+                <input
+                  className='formInputSmall'
+                  type='number'
+                  id='floorNumber'
+                  value={floorNumber}
+                  onChange={onMutate}
+                  min='0'
+                  max='150'
+                  required
+                />
+              </div>
+
+              <label className='formLabel'>{t('elevator')}</label>
+              <div className='formButtons'>
+                <button
+                  className={elevator ? 'formButtonActive' : 'formButton'}
+                  type='button'
+                  id='elevator'
+                  value={true}
+                  onClick={onMutate}
+                >
+                  {t('yes')}
+                </button>
+                <button
+                  className={
+                    !elevator && elevator !== null
+                      ? 'formButtonActive'
+                      : 'formButton'
+                  }
+                  type='button'
+                  id='elevator'
                   value={false}
                   onClick={onMutate}
                 >
