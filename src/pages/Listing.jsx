@@ -14,6 +14,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { exists } from 'i18next'
 
 function Listing() {
   const [listing, setListing] = useState(null)
@@ -40,6 +41,7 @@ function Listing() {
     fetchListing()
   }, [navigate, params.listingId])
 
+
   if(loading) {
     return <Spinner />
   }
@@ -48,7 +50,7 @@ function Listing() {
     <main>
       {console.log(listing.imageUrls[1])}      
       {listing?.imageUrls?.length > 0 ? (
-        <Swiper className='listingSwiper' style={{height: '33vh'}} modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{ clickable: true }}>
+        <Swiper className='listingSwiper' modules={[Navigation, Pagination, Scrollbar, A11y]} slidesPerView={1} pagination={{ clickable: true }}>
           {listing.imageUrls.map((url, index) => (
             <SwiperSlide key={index}>
               <div
@@ -82,6 +84,9 @@ function Listing() {
         <p className="listingType">
           {listing.type === 'rent' ? t('forRent') : t('forSale')}
         </p>
+        <p className="listingType">
+          {t(listing.propertyType)}
+        </p>
         {listing.offer && (
           <p className="discountPrice">
             {listing.regularPrice - listing.discountedPrice}€ {t('discount')}
@@ -90,12 +95,32 @@ function Listing() {
 
         <ul className="listingDetailsList">
           <li>
+            {listing.squareMeters > 1 ? `${listing.squareMeters} ${t('squareMeters')}` : `1 ${t('squareMeters')}`}
+          </li>
+
+          <li>
+            {listing.propertyType === 'appartment' ? t(`floorNumber`) + listing.floorNumber : t('howManyNumbersObject') + listing.floorNumber}
+          </li>
+
+          <li>
+            {listing.yard === true ? `${listing.yardSquareMeters} ${t('yardSquareMeters')}` : `${t('noYard')}`}
+          </li>
+
+          <li>
+            {listing.rooms > 1 ? `${listing.rooms} ${t('rooms')}` : `1 ${t('room')}`}
+          </li>
+
+          <li>
             {listing.bedrooms > 1 ? `${listing.bedrooms} ${t('bedrooms')}` : `1 ${t('bedroom')}`}
           </li>
 
           <li>
             {listing.bathrooms > 1 ? `${listing.bathrooms} ${t('bathrooms')}` : `1 ${t('bathroom')}`}
           </li>
+
+          <li>{listing.balcony && t('hasBalcony')}</li>
+
+          <li>{listing.elevator && t('hasElevator')}</li>
 
           <li>{listing.parking && t('parkingSpot')}</li>
 

@@ -609,6 +609,14 @@ button {
   align-items: center;
 }
 
+
+@media (min-width: 1024px) {
+  .shareIconDiv {
+    top: 13%;
+    right: 3%;
+  }
+}
+
 .listingName {
   font-weight: 600;
   font-size: 1.5rem;
@@ -938,6 +946,13 @@ button {
 .listingSwiper{
   height: 33vh;
 }
+
+@media (min-width: 1024px) {
+  .listingSwiper {
+    height: 60vh;
+  }
+}
+
 
 @media (min-width: 1024px) {
   .homeSlider {
