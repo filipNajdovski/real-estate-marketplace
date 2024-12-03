@@ -14,7 +14,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { exists } from 'i18next'
 
 function Listing() {
   const [listing, setListing] = useState(null)
@@ -95,15 +94,15 @@ function Listing() {
 
         <ul className="listingDetailsList">
           <li>
-            {listing.squareMeters > 1 ? `${listing.squareMeters} ${t('squareMeters')}` : `1 ${t('squareMeters')}`}
+            {listing.squareMeters > 1 ? `${listing.squareMeters} ${t('squareMeters')}` : `0 ${t('squareMeters')}`}
           </li>
 
           <li>
-            {listing.propertyType === 'appartment' ? t(`floorNumber`) + listing.floorNumber : t('howManyNumbersObject') + listing.floorNumber}
+            {listing.propertyType === 'appartment' ? t(`floorNumber`) + listing.floorNumber : t('howManyNumbersObject')+ ' ' + listing.floorNumber}
           </li>
 
           <li>
-            {listing.yard === true ? `${listing.yardSquareMeters} ${t('yardSquareMeters')}` : `${t('noYard')}`}
+            {listing.yard === true ? `${listing.yardSquareMeters} ${t('squareMeters')}` : `${t('noYard')}`}
           </li>
 
           <li>
